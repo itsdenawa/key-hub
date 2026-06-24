@@ -34,13 +34,13 @@ export async function HomeView() {
       <section className="relative">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#050814_0%,rgba(5,8,20,0.96)_42%,rgba(5,8,20,0.5)_70%,#050814_100%),radial-gradient(circle_at_75%_42%,rgba(124,58,237,0.42),transparent_36%),radial-gradient(circle_at_88%_66%,rgba(6,182,212,0.16),transparent_24%)]" />
         <div className="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(139,92,246,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.22)_1px,transparent_1px)] [background-size:56px_56px]" />
-        <div className="mx-auto grid min-h-[585px] w-full max-w-[1290px] gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_600px] lg:px-8 lg:py-12">
-          <div className="relative z-10 flex max-w-3xl flex-col justify-center gap-7">
+        <div className="mx-auto grid min-h-[570px] w-full max-w-[1290px] gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[1fr_640px] lg:px-8 lg:py-10">
+          <div className="relative z-10 flex max-w-3xl flex-col justify-center gap-6">
             <Badge className="w-fit rounded-full border-violet-400/30 bg-violet-500/18 px-3 py-1 text-[11px] font-bold uppercase text-violet-200">
               <Zap className="mr-1 size-3" />
               Instant digital delivery
             </Badge>
-            <div className="space-y-6">
+            <div className="space-y-5">
               <h1 className="max-w-[720px] text-[42px] font-black leading-[1.12] sm:text-[56px] lg:text-[58px]">
                 Digital products
                 <br />
@@ -77,7 +77,7 @@ export async function HomeView() {
                 How it works
               </Link>
             </div>
-            <div className="grid max-w-[620px] gap-5 pt-5 sm:grid-cols-3">
+            <div className="grid max-w-[620px] gap-5 pt-4 sm:grid-cols-3">
               <HeroFeature
                 icon={Package}
                 title="Instant delivery"
@@ -129,7 +129,7 @@ export async function HomeView() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1290px] px-4 py-12 sm:px-6 lg:px-8">
+      <section className="mx-auto w-full max-w-[1290px] px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold">Popular products</h2>
@@ -152,7 +152,7 @@ export async function HomeView() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1290px] px-4 pb-12 sm:px-6 lg:px-8">
+      <section className="mx-auto w-full max-w-[1290px] px-4 pb-10 sm:px-6 lg:px-8">
         <div className="rounded-lg border border-white/10 bg-[#0b1020]/80 p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
           <h2 className="text-center text-2xl font-bold">
             Why choose{" "}
@@ -219,12 +219,12 @@ function HeroVault() {
   return (
     <div className="relative z-10 hidden items-center justify-center lg:flex">
       <Image
-        src="/hero/keyhub-neon-vault.png"
+        src="/hero/keyhub-neon-vault-tight.png"
         alt="KeyHub neon digital goods vault"
-        width={920}
-        height={680}
+        width={779}
+        height={633}
         priority
-        className="h-[570px] w-[680px] translate-x-5 translate-y-8 object-contain"
+        className="h-[610px] w-[750px] translate-x-6 translate-y-8 object-contain"
       />
     </div>
   );
@@ -246,11 +246,11 @@ function HomeProductCard({ product }: HomeProductCardProps) {
           alt={product.title}
           width={420}
           height={360}
-          className="aspect-[1.07] w-full object-cover transition duration-300 group-hover:scale-[1.04]"
+          className="aspect-[1.03] w-full object-cover transition duration-300 group-hover:scale-[1.04]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d1325]/70 via-transparent to-transparent" />
       </Link>
-      <div className="p-4">
+      <div className="p-4 pt-3">
         <Link
           href={`/products/${product.slug}`}
           className="line-clamp-2 min-h-[44px] font-semibold leading-5 text-white hover:text-violet-300"

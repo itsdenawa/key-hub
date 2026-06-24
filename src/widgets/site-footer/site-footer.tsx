@@ -31,23 +31,27 @@ export function SiteFooter() {
             ["How it works", "/products"],
             ["Guarantees", "/account/orders"],
             ["Refunds", "/account/orders"],
+            ["FAQ", "/products"],
             ["Support", "/account/profile"],
           ]}
         />
         <FooterColumn
           title="Catalog"
           links={[
-            ["Games", "/products?category=productivity"],
-            ["Subscriptions", "/products"],
-            ["Software", "/products?category=developer"],
-            ["Keys", "/products"],
-            ["Templates", "/products?category=design"],
+            ["Games", "/products?category=games"],
+            ["Subscriptions", "/products?category=subscriptions"],
+            ["Software", "/products?category=software"],
+            ["Keys", "/products?category=keys"],
+            ["Templates", "/products?search=templates"],
+            ["Courses", "/products?search=courses"],
           ]}
         />
         <FooterColumn
           title="About"
           links={[
             ["Store", "/products"],
+            ["Blog", "/products"],
+            ["Affiliate program", "/products"],
             ["Reviews", "/products"],
             ["Contacts", "/account/profile"],
           ]}
