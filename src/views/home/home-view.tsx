@@ -28,14 +28,13 @@ import { buttonVariants } from "@/shared/ui/button";
 export async function HomeView() {
   const products = await getStorefrontProducts();
   const featuredProducts = products.slice(0, 6);
-  const heroProducts = products.slice(0, 4);
 
   return (
     <main className="overflow-hidden bg-[#050814] text-white">
       <section className="relative">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#050814_0%,rgba(5,8,20,0.96)_42%,rgba(5,8,20,0.5)_70%,#050814_100%),radial-gradient(circle_at_75%_42%,rgba(124,58,237,0.42),transparent_36%),radial-gradient(circle_at_88%_66%,rgba(6,182,212,0.16),transparent_24%)]" />
         <div className="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(139,92,246,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.22)_1px,transparent_1px)] [background-size:56px_56px]" />
-        <div className="mx-auto grid min-h-[560px] w-full max-w-[1290px] gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_570px] lg:px-8 lg:py-12">
+        <div className="mx-auto grid min-h-[585px] w-full max-w-[1290px] gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_600px] lg:px-8 lg:py-12">
           <div className="relative z-10 flex max-w-3xl flex-col justify-center gap-7">
             <Badge className="w-fit rounded-full border-violet-400/30 bg-violet-500/18 px-3 py-1 text-[11px] font-bold uppercase text-violet-200">
               <Zap className="mr-1 size-3" />
@@ -96,7 +95,7 @@ export async function HomeView() {
               />
             </div>
           </div>
-          <HeroVault products={heroProducts} />
+          <HeroVault />
         </div>
       </section>
 
@@ -216,47 +215,17 @@ function HeroFeature({ body, icon: Icon, title }: HeroFeatureProps) {
   );
 }
 
-type HeroVaultProps = {
-  products: Awaited<ReturnType<typeof getStorefrontProducts>>;
-};
-
-function HeroVault({ products }: HeroVaultProps) {
+function HeroVault() {
   return (
     <div className="relative z-10 hidden items-center justify-center lg:flex">
-      <div className="relative h-[500px] w-full">
-        <div className="absolute inset-x-10 bottom-1 h-24 rounded-[50%] bg-violet-600/30 blur-3xl" />
-        <div className="absolute left-1/2 top-[56%] h-56 w-[360px] -translate-x-1/2 rounded-lg border border-violet-400/35 bg-[#11152b] shadow-[0_0_100px_rgba(124,58,237,0.64)] [transform:translateX(-50%)_perspective(600px)_rotateX(5deg)]">
-          <div className="absolute inset-x-0 -top-8 mx-auto h-16 w-[330px] rounded-lg border border-violet-400/30 bg-[#171c3a] shadow-[0_0_55px_rgba(168,85,247,0.45)] [transform:perspective(500px)_rotateX(42deg)]" />
-          <div className="absolute inset-x-8 top-7 h-16 rounded-md border border-violet-400/30 bg-violet-500/15 shadow-[inset_0_0_28px_rgba(124,58,237,0.35)]" />
-          <div className="absolute inset-x-12 bottom-9 rounded-md border border-violet-400/30 bg-[#080b19] py-5 text-center text-4xl font-black text-violet-400 shadow-[0_0_30px_rgba(124,58,237,0.35)]">
-            KEY
-            <span className="text-cyan-300">HUB</span>
-          </div>
-          <div className="absolute -left-5 top-14 h-24 w-8 rounded border border-violet-400/20 bg-black/25" />
-          <div className="absolute -right-5 top-14 h-24 w-8 rounded border border-violet-400/20 bg-black/25" />
-        </div>
-        <div className="absolute left-1/2 top-[50%] h-20 w-96 -translate-x-1/2 rounded-full bg-violet-500/60 blur-3xl" />
-        {products.map((product, index) => (
-          <div
-            key={product.id}
-            className={cn(
-              "absolute overflow-hidden rounded-xl border border-cyan-300/30 bg-[#101936]/85 p-2 shadow-[0_0_42px_rgba(34,211,238,0.28)] backdrop-blur",
-              index === 0 && "left-20 top-12 rotate-[-12deg]",
-              index === 1 && "right-16 top-20 rotate-[13deg]",
-              index === 2 && "left-36 top-48 rotate-[7deg]",
-              index === 3 && "right-36 top-56 rotate-[-9deg]",
-            )}
-          >
-            <Image
-              src={product.imageUrl}
-              alt={product.title}
-              width={150}
-              height={190}
-              className="h-44 w-32 rounded-lg object-cover"
-            />
-          </div>
-        ))}
-      </div>
+      <Image
+        src="/hero/keyhub-neon-vault.png"
+        alt="KeyHub neon digital goods vault"
+        width={920}
+        height={680}
+        priority
+        className="h-[570px] w-[680px] translate-x-5 translate-y-8 object-contain"
+      />
     </div>
   );
 }
