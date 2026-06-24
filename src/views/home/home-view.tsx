@@ -34,14 +34,14 @@ export async function HomeView() {
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#050814_0%,rgba(5,8,20,0.96)_42%,rgba(5,8,20,0.5)_70%,#050814_100%),radial-gradient(circle_at_75%_42%,rgba(124,58,237,0.42),transparent_36%),radial-gradient(circle_at_88%_66%,rgba(6,182,212,0.16),transparent_24%)]" />
         <HeroVault />
-        <div className="mx-auto min-h-[470px] w-full max-w-[948px] px-4 py-6 sm:px-6 lg:px-0 lg:py-0">
-          <div className="relative z-10 flex max-w-[560px] flex-col justify-center gap-5">
+        <div className="mx-auto min-h-[500px] w-full max-w-[1160px] px-4 py-7 sm:px-6 lg:px-8 2xl:max-w-[1440px] 2xl:px-0">
+          <div className="relative z-10 flex min-h-[430px] max-w-[620px] flex-col justify-center gap-5 2xl:max-w-[720px]">
             <Badge className="w-fit rounded-full border-violet-400/30 bg-violet-500/18 px-3 py-1 text-[11px] font-bold uppercase text-violet-200">
               <Zap className="mr-1 size-3" />
               Instant digital delivery
             </Badge>
             <div className="space-y-4">
-              <h1 className="max-w-[560px] text-[38px] font-black leading-[1.16] sm:text-[37px] lg:text-[37px]">
+              <h1 className="max-w-[620px] text-[42px] font-black leading-[1.12] sm:text-[48px] lg:text-[46px] 2xl:max-w-[720px] 2xl:text-[52px]">
                 Digital products
                 <br />
                 for{" "}
@@ -49,7 +49,7 @@ export async function HomeView() {
                   work, games & creativity
                 </span>
               </h1>
-              <p className="max-w-[520px] text-[15px] leading-7 text-slate-300">
+              <p className="max-w-[650px] text-base leading-7 text-slate-300 2xl:text-lg 2xl:leading-8">
                 Games, software, subscriptions, keys, templates, courses and
                 more.
                 <br />
@@ -61,7 +61,7 @@ export async function HomeView() {
                 href="/products"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "h-12 rounded-lg bg-gradient-to-r from-violet-500 to-blue-500 px-7 text-base font-bold text-white shadow-[0_0_34px_rgba(124,58,237,0.58)] hover:from-violet-400 hover:to-blue-400",
+                  "h-14 rounded-lg bg-gradient-to-r from-violet-500 to-blue-500 px-8 text-base font-bold text-white shadow-[0_0_34px_rgba(124,58,237,0.58)] hover:from-violet-400 hover:to-blue-400",
                 )}
               >
                 Go to catalog
@@ -71,13 +71,13 @@ export async function HomeView() {
                 href="/account/orders"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
-                  "h-12 rounded-lg border-white/15 bg-white/[0.045] px-7 text-base font-bold text-white hover:bg-white/10",
+                  "h-14 rounded-lg border-white/15 bg-white/[0.045] px-8 text-base font-bold text-white hover:bg-white/10",
                 )}
               >
                 How it works
               </Link>
             </div>
-            <div className="grid max-w-[560px] gap-4 pt-2 sm:grid-cols-3">
+            <div className="grid max-w-[760px] gap-4 pt-3 sm:grid-cols-3 2xl:gap-5">
               <HeroFeature
                 icon={Package}
                 title="Instant delivery"
@@ -98,8 +98,8 @@ export async function HomeView() {
         </div>
       </section>
 
-      <section className="relative z-20 mx-auto -mt-7 w-full max-w-[948px] px-4 sm:px-6 lg:px-0">
-        <div className="grid overflow-hidden rounded-lg border border-white/10 bg-[#0b1020]/92 px-2 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_60px_rgba(0,0,0,0.32)] backdrop-blur sm:grid-cols-2 lg:grid-cols-10">
+      <section className="relative z-20 mx-auto w-full max-w-[1160px] px-4 sm:px-6 lg:px-8 2xl:max-w-[1440px] 2xl:px-0">
+        <div className="grid overflow-hidden rounded-lg border border-white/10 bg-[#0b1020]/92 px-2 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_60px_rgba(0,0,0,0.32)] backdrop-blur sm:grid-cols-2 lg:grid-cols-10">
           {[
             ["Popular", Sparkles],
             ["Games", Gamepad2],
@@ -116,7 +116,7 @@ export async function HomeView() {
               key={String(label)}
               href={index === 0 ? "/products" : `/products?search=${label}`}
               className={cn(
-                "relative flex min-h-[78px] flex-col items-center justify-center gap-2 px-2 py-2 text-xs text-slate-300 transition hover:bg-white/[0.04] hover:text-white lg:border-l lg:border-white/8 lg:first:border-l-0",
+                "relative flex min-h-[88px] flex-col items-center justify-center gap-2 px-3 py-2 text-sm text-slate-300 transition hover:bg-white/[0.04] hover:text-white lg:border-l lg:border-white/8 lg:first:border-l-0",
                 index === 0 &&
                   "text-violet-300 after:absolute after:bottom-0 after:h-0.5 after:w-16 after:rounded-full after:bg-violet-500",
               )}
@@ -128,7 +128,7 @@ export async function HomeView() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[948px] px-4 pb-8 pt-9 sm:px-6 lg:px-0">
+      <section className="mx-auto w-full max-w-[1160px] px-4 pb-8 pt-9 sm:px-6 lg:px-8 2xl:max-w-[1360px] 2xl:px-0">
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold">Popular products</h2>
@@ -144,14 +144,14 @@ export async function HomeView() {
             <ArrowRight className="size-4" />
           </Link>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 2xl:gap-4">
           {featuredProducts.map((product) => (
             <HomeProductCard key={product.id} product={product} />
           ))}
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[948px] px-4 pb-8 sm:px-6 lg:px-0">
+      <section className="mx-auto w-full max-w-[1160px] px-4 pb-8 sm:px-6 lg:px-8 2xl:max-w-[1440px] 2xl:px-0">
         <div className="rounded-lg border border-white/10 bg-[#0b1020]/80 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
           <h2 className="text-center text-xl font-bold">
             Why choose{" "}
@@ -202,9 +202,9 @@ type HeroFeatureProps = {
 
 function HeroFeature({ body, icon: Icon, title }: HeroFeatureProps) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] text-violet-300">
-        <Icon className="size-5" />
+    <div className="flex min-h-[90px] items-center gap-4 rounded-lg border border-white/10 bg-[#0b1020]/72 px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur">
+      <span className="flex size-11 shrink-0 items-center justify-center rounded-lg text-violet-300">
+        <Icon className="size-7" />
       </span>
       <div>
         <p className="text-sm font-semibold text-white">{title}</p>
@@ -216,7 +216,7 @@ function HeroFeature({ body, icon: Icon, title }: HeroFeatureProps) {
 
 function HeroVault() {
   return (
-    <div className="pointer-events-none absolute inset-0 z-0 hidden bg-[url('/hero/keyhub-hero-background.png')] bg-cover bg-center bg-no-repeat 2xl:bg-[length:auto_620px] 2xl:bg-[position:calc(50%+180px)_top] lg:block" />
+    <div className="pointer-events-none absolute inset-0 z-0 hidden bg-[url('/hero/keyhub-hero-background.png')] bg-[length:100%_100%] bg-center bg-no-repeat lg:block" />
   );
 }
 

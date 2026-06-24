@@ -8,7 +8,7 @@ import { Input } from "@/shared/ui/input";
 export function SiteFooter() {
   return (
     <footer className="border-t border-white/10 bg-[#050814]">
-      <div className="mx-auto grid w-full max-w-[948px] gap-8 px-4 py-7 text-sm text-muted-foreground sm:px-6 md:grid-cols-[1.35fr_0.85fr_0.85fr_0.95fr_1.85fr] lg:px-0">
+      <div className="mx-auto grid w-full max-w-[1160px] gap-8 px-4 py-8 text-sm text-muted-foreground sm:px-6 md:grid-cols-[1.35fr_0.85fr_0.85fr_0.95fr_1.85fr] lg:px-8 2xl:max-w-[1440px] 2xl:px-0">
         <div>
           <Link href="/" className="flex items-center gap-2 font-semibold">
             <span className="flex size-9 items-center justify-center rounded-md border border-cyan-300/40 bg-violet-500/18 text-cyan-300">

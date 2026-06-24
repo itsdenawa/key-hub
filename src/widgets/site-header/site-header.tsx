@@ -13,7 +13,7 @@ export async function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#050814]/88 backdrop-blur-xl">
-      <div className="mx-auto grid min-h-[70px] w-full max-w-[948px] grid-cols-[1fr_auto] items-center gap-4 px-4 sm:px-6 lg:grid-cols-[160px_104px_1fr_auto] lg:px-0">
+      <div className="mx-auto grid min-h-[70px] w-full max-w-[1160px] grid-cols-[1fr_auto] items-center gap-4 px-4 sm:px-6 lg:grid-cols-[180px_124px_1fr_auto] lg:px-8 2xl:max-w-[1440px] 2xl:px-0">
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <span className="flex size-8 items-center justify-center rounded-md border border-cyan-300/40 bg-violet-500/18 text-cyan-300 shadow-[0_0_24px_rgba(124,58,237,0.5)]">
             <KeyRound className="size-4" />
