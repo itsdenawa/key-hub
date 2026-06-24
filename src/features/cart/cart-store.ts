@@ -17,7 +17,10 @@ export type CartItem = {
 type CartState = {
   items: CartItem[];
   addProduct: (product: Product) => void;
+  incrementProduct: (productId: string) => void;
+  decrementProduct: (productId: string) => void;
   removeProduct: (productId: string) => void;
+  setQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   getItemsCount: () => number;
   getTotalCents: () => number;
@@ -57,9 +60,41 @@ export const useCartStore = create<CartState>()(
             ],
           };
         }),
+      incrementProduct: (productId) =>
+        set((state) => ({
+          items: state.items.map((item) =>
+            item.productId === productId
+              ? { ...item, quantity: Math.min(item.quantity + 1, 9) }
+              : item,
+          ),
+        })),
+      decrementProduct: (productId) =>
+        set((state) => ({
+          items: state.items.flatMap((item) => {
+            if (item.productId !== productId) {
+              return item;
+            }
+
+            if (item.quantity <= 1) {
+              return [];
+            }
+
+            return { ...item, quantity: item.quantity - 1 };
+          }),
+        })),
       removeProduct: (productId) =>
         set((state) => ({
           items: state.items.filter((item) => item.productId !== productId),
+        })),
+      setQuantity: (productId, quantity) =>
+        set((state) => ({
+          items: state.items
+            .map((item) =>
+              item.productId === productId
+                ? { ...item, quantity: Math.min(Math.max(quantity, 1), 9) }
+                : item,
+            )
+            .filter((item) => item.quantity > 0),
         })),
       clearCart: () => set({ items: [] }),
       getItemsCount: () =>

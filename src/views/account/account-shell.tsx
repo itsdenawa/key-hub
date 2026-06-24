@@ -1,23 +1,15 @@
-import Link from "next/link";
-
 import { demoOrders } from "@/entities/order/model";
 import { demoProfile } from "@/entities/user/model";
 import { getCurrentUserProfile } from "@/entities/user/session";
 import { formatMoney } from "@/shared/lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
+import { AccountNav, type AccountSection } from "@/views/account/account-nav";
 
 type AccountShellProps = {
   title: string;
   description: string;
-  section: "profile" | "orders" | "wishlist" | "addresses";
+  section: AccountSection;
 };
-
-const accountNav = [
-  { label: "Profile", href: "/account/profile", section: "profile" },
-  { label: "Orders", href: "/account/orders", section: "orders" },
-  { label: "Wishlist", href: "/account/wishlist", section: "wishlist" },
-  { label: "Addresses", href: "/account/addresses", section: "addresses" },
-] as const;
 
 export function AccountShell({
   title,
@@ -45,21 +37,7 @@ async function AccountShellContent({
   return (
     <main className="mx-auto grid w-full max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[240px_1fr] lg:px-8">
       <aside>
-        <nav className="grid gap-1" aria-label="Account">
-          {accountNav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`rounded-lg px-3 py-2 text-sm ${
-                item.section === section
-                  ? "bg-accent font-medium text-accent-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <AccountNav section={section} />
       </aside>
       <section className="space-y-5">
         <div>

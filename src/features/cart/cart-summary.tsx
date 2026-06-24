@@ -14,7 +14,7 @@ export function CartSummary() {
 
   return (
     <Link
-      href="/account/orders"
+      href="/cart"
       aria-label="Open cart summary"
       className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
     >

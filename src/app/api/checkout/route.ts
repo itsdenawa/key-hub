@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getProductById } from "@/entities/product/model";
+import { getStorefrontProducts } from "@/entities/product/repository";
 import { checkoutSchema } from "@/entities/product/schema";
 import { createStripeClient } from "@/shared/api/stripe/server";
 import { createSupabaseServerClient } from "@/shared/api/supabase/server";
@@ -29,8 +29,9 @@ export async function POST(request: Request) {
     );
   }
 
+  const products = await getStorefrontProducts();
   const items = parsed.data.items.map((item) => {
-    const product = getProductById(item.productId);
+    const product = products.find((product) => product.id === item.productId);
 
     if (!product) {
       throw new Error(`Product ${item.productId} was not found.`);

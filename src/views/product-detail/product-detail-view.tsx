@@ -90,7 +90,7 @@ export function ProductDetailView({
               <Separator />
               <AddToCartButton product={product} size="lg" className="w-full" />
               <Link
-                href="/auth/sign-in"
+                href="/auth/sign-in?next=/cart"
                 className={cn(
                   buttonVariants({
                     variant: "outline",
