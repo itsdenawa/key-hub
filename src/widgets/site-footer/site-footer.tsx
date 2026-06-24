@@ -8,7 +8,7 @@ import { Input } from "@/shared/ui/input";
 export function SiteFooter() {
   return (
     <footer className="border-t border-white/10 bg-[#050814]">
-      <div className="mx-auto grid w-full max-w-[1290px] gap-10 px-4 py-9 text-sm text-muted-foreground sm:px-6 md:grid-cols-[1.5fr_1fr_1fr_1fr_1.6fr] lg:px-8">
+      <div className="mx-auto grid w-full max-w-[948px] gap-8 px-4 py-7 text-sm text-muted-foreground sm:px-6 md:grid-cols-[1.35fr_0.85fr_0.85fr_0.95fr_1.85fr] lg:px-0">
         <div>
           <Link href="/" className="flex items-center gap-2 font-semibold">
             <span className="flex size-9 items-center justify-center rounded-md border border-cyan-300/40 bg-violet-500/18 text-cyan-300">
@@ -18,10 +18,10 @@ export function SiteFooter() {
               Key<span className="text-violet-400">Hub</span>
             </span>
           </Link>
-          <p className="mt-5 max-w-56 leading-6">
+          <p className="mt-4 max-w-56 leading-6">
             Digital goods store with instant delivery and protected downloads.
           </p>
-          <p className="mt-10 text-xs">
+          <p className="mt-8 text-xs">
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
         </div>
@@ -61,7 +61,7 @@ export function SiteFooter() {
           <p className="mt-3 leading-6">
             Get the best digital offers and new drops first.
           </p>
-          <form className="mt-5 flex gap-2">
+          <form className="mt-4 flex gap-2">
             <Input placeholder="Your email" type="email" />
             <Button
               type="submit"
@@ -71,7 +71,7 @@ export function SiteFooter() {
               <Send className="size-4" />
             </Button>
           </form>
-          <div className="mt-8 flex flex-wrap gap-4 text-base font-semibold text-white/70">
+          <div className="mt-7 flex flex-wrap gap-x-4 gap-y-2 whitespace-nowrap text-base font-semibold text-white/70">
             <span>VISA</span>
             <span>MC</span>
             <span>Apple Pay</span>

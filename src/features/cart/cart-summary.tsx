@@ -18,7 +18,7 @@ export function CartSummary() {
       aria-label="Open cart summary"
       className={cn(
         buttonVariants({ variant: "outline", size: "sm" }),
-        "relative h-11 rounded-lg border-white/10 bg-white/[0.045] px-4 text-white hover:bg-white/10",
+        "relative h-9 rounded-lg border-white/10 bg-white/[0.045] px-3 text-white hover:bg-white/10",
       )}
     >
       <ShoppingBag data-icon="inline-start" />
