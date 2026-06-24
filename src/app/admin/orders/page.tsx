@@ -1,11 +1,5 @@
-import { AdminShell } from "@/views/admin/admin-shell";
+import { AdminOrdersView } from "@/views/admin/orders-view";
 
 export default function AdminOrdersPage() {
-  return (
-    <AdminShell
-      section="orders"
-      title="Orders"
-      description="Inspect payment state, fulfillment, and customer entitlements."
-    />
-  );
+  return <AdminOrdersView />;
 }

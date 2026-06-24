@@ -1,11 +1,5 @@
-import { AdminShell } from "@/views/admin/admin-shell";
+import { DashboardView } from "@/views/admin/dashboard-view";
 
 export default function AdminDashboardPage() {
-  return (
-    <AdminShell
-      section="dashboard"
-      title="Admin dashboard"
-      description="Revenue, orders, customers, and recent activity live here."
-    />
-  );
+  return <DashboardView />;
 }
