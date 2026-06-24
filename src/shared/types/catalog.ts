@@ -33,9 +33,17 @@ export type Product = {
   delivery: string;
   fileTypes: string[];
   license: string;
+  compatibility: string[];
+  specs: Array<{
+    label: string;
+    value: string;
+  }>;
+  tags: string[];
   status: ProductStatus;
   asset: ProductAsset;
   createdAt: string;
 };
 
 export type CatalogSort = "featured" | "newest" | "price-asc" | "price-desc";
+
+export type PriceRange = "all" | "under-50" | "50-75" | "75-plus";

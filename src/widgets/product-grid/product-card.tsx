@@ -46,13 +46,23 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
           <WishlistButton productId={product.id} />
         </div>
+        <div className="flex flex-wrap gap-1.5">
+          {product.fileTypes.slice(0, 3).map((type) => (
+            <Badge key={type} variant="outline">
+              {type}
+            </Badge>
+          ))}
+        </div>
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="font-semibold">{formatMoney(product.priceCents)}</p>
-            <p className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Star className="size-3 fill-amber-400 text-amber-400" />
-              {product.rating.toFixed(1)} rating
-            </p>
+            <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1">
+                <Star className="size-3 fill-amber-400 text-amber-400" />
+                {product.rating.toFixed(1)}
+              </span>
+              <span>{product.license}</span>
+            </div>
           </div>
           <AddToCartButton product={product} size="sm" />
         </div>

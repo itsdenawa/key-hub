@@ -1,4 +1,4 @@
-import type { CatalogSort, Product } from "@/shared/types/catalog";
+import type { CatalogSort, PriceRange, Product } from "@/shared/types/catalog";
 
 export const products: Product[] = [
   {
@@ -18,10 +18,17 @@ export const products: Product[] = [
     delivery: "Instant ZIP download",
     fileTypes: ["MD", "TS", "PDF"],
     license: "Solo commercial license",
+    compatibility: ["Next.js", "Supabase", "Stripe", "Markdown"],
+    specs: [
+      { label: "Files", value: "34 templates and examples" },
+      { label: "Updates", value: "Minor updates included" },
+      { label: "Use case", value: "Product launches and releases" },
+    ],
+    tags: ["launch", "checklists", "boilerplate"],
     status: "active",
     asset: {
       id: "asset-launch-kit-pro",
-      productId: "prod-keyhub-launch-kit",
+      productId: "00000000-0000-4000-8000-000000000001",
       filename: "launch-kit-pro.zip",
       sizeMb: 18,
       storagePath: "launch-kit-pro/latest.zip",
@@ -45,10 +52,17 @@ export const products: Product[] = [
     delivery: "Instant Figma and ZIP download",
     fileTypes: ["FIG", "JSON", "MD"],
     license: "Team commercial license",
+    compatibility: ["Figma", "Tailwind CSS", "Design tokens"],
+    specs: [
+      { label: "Components", value: "48 production UI patterns" },
+      { label: "Tokens", value: "Light and dark token sets" },
+      { label: "Use case", value: "SaaS product interface systems" },
+    ],
+    tags: ["design", "tokens", "systems"],
     status: "active",
     asset: {
       id: "asset-design-vault",
-      productId: "prod-design-vault",
+      productId: "00000000-0000-4000-8000-000000000002",
       filename: "design-vault.zip",
       sizeMb: 42,
       storagePath: "design-vault/latest.zip",
@@ -72,10 +86,17 @@ export const products: Product[] = [
     delivery: "Instant ZIP download",
     fileTypes: ["MD", "CSV", "JSON"],
     license: "Solo commercial license",
+    compatibility: ["Notion", "Zapier", "CSV", "JSON"],
+    specs: [
+      { label: "Recipes", value: "22 workflow recipes" },
+      { label: "Templates", value: "Support and content ops packs" },
+      { label: "Use case", value: "Repeatable operational workflows" },
+    ],
+    tags: ["automation", "ops", "templates"],
     status: "active",
     asset: {
       id: "asset-automation-key",
-      productId: "prod-automation-key",
+      productId: "00000000-0000-4000-8000-000000000003",
       filename: "automation-key.zip",
       sizeMb: 11,
       storagePath: "automation-key/latest.zip",
@@ -99,10 +120,17 @@ export const products: Product[] = [
     delivery: "Instant repository download",
     fileTypes: ["TS", "MD", "YAML"],
     license: "Team commercial license",
+    compatibility: ["TypeScript", "OpenAPI", "Webhook systems"],
+    specs: [
+      { label: "Examples", value: "12 typed API flows" },
+      { label: "Docs", value: "Integration and auth notes" },
+      { label: "Use case", value: "SaaS API and webhook starts" },
+    ],
+    tags: ["api", "typescript", "webhooks"],
     status: "active",
     asset: {
       id: "asset-api-starter-pack",
-      productId: "prod-dev-pack",
+      productId: "00000000-0000-4000-8000-000000000004",
       filename: "api-starter-pack.zip",
       sizeMb: 24,
       storagePath: "api-starter-pack/latest.zip",
@@ -133,6 +161,9 @@ export type CatalogQuery = {
   search?: string;
   category?: string;
   sort?: CatalogSort;
+  fileType?: string;
+  license?: string;
+  price?: PriceRange;
   page?: number;
 };
 
@@ -140,20 +171,58 @@ export function getCatalogProducts({
   search,
   category,
   sort = "featured",
+  fileType,
+  license,
+  price = "all",
   page = 1,
 }: CatalogQuery) {
+  return filterCatalogProducts(products, {
+    search,
+    category,
+    sort,
+    fileType,
+    license,
+    price,
+    page,
+  });
+}
+
+export function filterCatalogProducts(
+  sourceProducts: Product[],
+  {
+    search,
+    category,
+    sort = "featured",
+    fileType,
+    license,
+    price = "all",
+    page = 1,
+  }: CatalogQuery,
+) {
   const pageSize = 6;
   const normalizedSearch = search?.trim().toLowerCase();
 
-  const filtered = products.filter((product) => {
+  const filtered = sourceProducts.filter((product) => {
     const matchesSearch = normalizedSearch
       ? `${product.title} ${product.description} ${product.categoryName}`
           .toLowerCase()
           .includes(normalizedSearch)
       : true;
     const matchesCategory = category ? product.categorySlug === category : true;
+    const matchesFileType = fileType
+      ? product.fileTypes.includes(fileType)
+      : true;
+    const matchesLicense = license ? product.license === license : true;
+    const matchesPrice = matchesPriceRange(product.priceCents, price);
 
-    return product.status === "active" && matchesSearch && matchesCategory;
+    return (
+      product.status === "active" &&
+      matchesSearch &&
+      matchesCategory &&
+      matchesFileType &&
+      matchesLicense &&
+      matchesPrice
+    );
   });
 
   const sorted = [...filtered].sort((left, right) => {
@@ -184,4 +253,33 @@ export function getCatalogProducts({
     totalPages,
     page: safePage,
   };
+}
+
+export function getCatalogFilters(sourceProducts = products) {
+  return {
+    fileTypes: uniqueSorted(
+      sourceProducts.flatMap((product) => product.fileTypes),
+    ),
+    licenses: uniqueSorted(sourceProducts.map((product) => product.license)),
+  };
+}
+
+function matchesPriceRange(priceCents: number, range: PriceRange) {
+  if (range === "under-50") {
+    return priceCents < 5000;
+  }
+
+  if (range === "50-75") {
+    return priceCents >= 5000 && priceCents <= 7500;
+  }
+
+  if (range === "75-plus") {
+    return priceCents > 7500;
+  }
+
+  return true;
+}
+
+function uniqueSorted(values: string[]) {
+  return [...new Set(values)].sort((left, right) => left.localeCompare(right));
 }

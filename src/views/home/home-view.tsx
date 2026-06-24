@@ -1,15 +1,19 @@
 import { ArrowRight, Download, LockKeyhole, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
-import { categories } from "@/entities/category/model";
-import { products } from "@/entities/product/model";
+import { getStorefrontCategories } from "@/entities/category/repository";
+import { getStorefrontProducts } from "@/entities/product/repository";
 import { cn } from "@/shared/lib/utils";
 import { Badge } from "@/shared/ui/badge";
 import { buttonVariants } from "@/shared/ui/button";
 import { Card, CardContent } from "@/shared/ui/card";
 import { ProductGrid } from "@/widgets/product-grid/product-grid";
 
-export function HomeView() {
+export async function HomeView() {
+  const [categories, products] = await Promise.all([
+    getStorefrontCategories(),
+    getStorefrontProducts(),
+  ]);
   const featuredProducts = products.slice(0, 3);
 
   return (

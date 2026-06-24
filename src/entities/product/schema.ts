@@ -10,6 +10,12 @@ export const checkoutSchema = z.object({
 });
 
 export const catalogSearchSchema = z.object({
+  fileType: z.string().optional(),
+  license: z.string().optional(),
+  price: z
+    .enum(["all", "under-50", "50-75", "75-plus"])
+    .optional()
+    .default("all"),
   search: z.string().optional(),
   category: z.string().optional(),
   sort: z

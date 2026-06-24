@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { products } from "@/entities/product/model";
 import {
-  getProductBySlug,
-  getRelatedProducts,
-  products,
-} from "@/entities/product/model";
+  getStorefrontProductBySlug,
+  getStorefrontRelatedProducts,
+} from "@/entities/product/repository";
 import { ProductDetailView } from "@/views/product-detail/product-detail-view";
 
 type ProductPageProps = {
@@ -22,7 +22,7 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getStorefrontProductBySlug(slug);
 
   if (!product) {
     return {
@@ -38,7 +38,7 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getStorefrontProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -47,7 +47,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <ProductDetailView
       product={product}
-      relatedProducts={getRelatedProducts(product)}
+      relatedProducts={await getStorefrontRelatedProducts(product)}
     />
   );
 }

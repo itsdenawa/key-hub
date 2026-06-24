@@ -1,4 +1,10 @@
-import { Download, FileArchive, ShieldCheck } from "lucide-react";
+import {
+  Check,
+  Download,
+  FileArchive,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -109,8 +115,60 @@ export function ProductDetailView({
               </div>
             </CardContent>
           </Card>
+          <Card>
+            <CardContent className="p-5">
+              <h2 className="font-semibold">Compatibility</h2>
+              <div className="mt-3 grid gap-2">
+                {product.compatibility.map((item) => (
+                  <div key={item} className="flex items-center gap-2 text-sm">
+                    <Check className="size-4 text-emerald-600" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </aside>
       </div>
+
+      <section className="grid gap-5 py-12 md:grid-cols-[1fr_1fr]">
+        <Card>
+          <CardContent className="p-5">
+            <div className="flex items-center gap-2">
+              <Sparkles className="size-4 text-muted-foreground" />
+              <h2 className="font-semibold">Product specs</h2>
+            </div>
+            <dl className="mt-5 grid gap-4">
+              {product.specs.map((spec) => (
+                <div
+                  key={spec.label}
+                  className="grid gap-1 rounded-lg border border-border p-3 sm:grid-cols-[160px_1fr]"
+                >
+                  <dt className="text-sm text-muted-foreground">
+                    {spec.label}
+                  </dt>
+                  <dd className="text-sm font-medium">{spec.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-5">
+            <h2 className="font-semibold">What happens after purchase</h2>
+            <div className="mt-5 grid gap-4 text-sm text-muted-foreground">
+              <p>
+                Stripe confirms payment, KeyHub marks the order fulfilled, and
+                an entitlement is created for this product.
+              </p>
+              <p>
+                Downloads stay private in Supabase Storage and are exposed only
+                through short-lived signed URLs.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
 
       <section className="py-12">
         <div className="mb-6">
