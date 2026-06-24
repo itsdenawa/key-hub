@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { demoOrders } from "@/entities/order/model";
 import { demoProfile } from "@/entities/user/model";
+import { getCurrentUserProfile } from "@/entities/user/session";
 import { formatMoney } from "@/shared/lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 
@@ -23,6 +24,24 @@ export function AccountShell({
   description,
   section,
 }: AccountShellProps) {
+  return (
+    <AccountShellContent
+      title={title}
+      description={description}
+      section={section}
+    />
+  );
+}
+
+async function AccountShellContent({
+  title,
+  description,
+  section,
+}: AccountShellProps) {
+  const { profile } = await getCurrentUserProfile();
+  const displayName = profile?.full_name || demoProfile.fullName;
+  const email = profile?.email || demoProfile.email;
+
   return (
     <main className="mx-auto grid w-full max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[240px_1fr] lg:px-8">
       <aside>
@@ -54,10 +73,8 @@ export function AccountShell({
           <CardContent className="grid gap-4 md:grid-cols-3">
             <div>
               <p className="text-sm text-muted-foreground">User</p>
-              <p className="font-medium">{demoProfile.fullName}</p>
-              <p className="text-sm text-muted-foreground">
-                {demoProfile.email}
-              </p>
+              <p className="font-medium">{displayName}</p>
+              <p className="text-sm text-muted-foreground">{email}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Orders</p>

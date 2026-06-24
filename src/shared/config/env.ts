@@ -37,3 +37,10 @@ export function requireEnvValue(value: string | undefined, label: string) {
 
   return value;
 }
+
+export function hasSupabaseBrowserEnv() {
+  return Boolean(
+    clientEnv.NEXT_PUBLIC_SUPABASE_URL &&
+      clientEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  );
+}

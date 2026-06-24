@@ -22,6 +22,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 - `bun check` runs Biome checks.
 - `bun format` formats the codebase.
 - `bun typecheck` runs TypeScript.
+- `bun run db:start` starts the local Supabase stack.
+- `bun run db:reset` applies migrations and seed data locally.
+- `bun run db:types` regenerates Supabase database types.
 
 ## Structure
 
@@ -35,3 +38,19 @@ The project follows a Feature-Sliced Design inspired layout:
 - `src/shared` for UI primitives, providers, config, integrations, and helpers.
 
 Copy `.env.example` to `.env.local` when wiring Supabase and Stripe.
+
+## Supabase
+
+The database foundation lives in `supabase/migrations` and `supabase/seed.sql`.
+It creates the catalog, orders, entitlements, profile roles, RLS policies, and
+public/private storage buckets required by the plan.
+
+For local development:
+
+```bash
+bun run db:start
+bun run db:reset
+bun run db:types
+```
+
+Then copy the local Supabase anon and service-role keys into `.env.local`.

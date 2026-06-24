@@ -2,6 +2,7 @@ import { Package, ReceiptText, Users } from "lucide-react";
 import Link from "next/link";
 import { demoOrders } from "@/entities/order/model";
 import { products } from "@/entities/product/model";
+import { getCurrentUserProfile } from "@/entities/user/session";
 import { formatMoney } from "@/shared/lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 
@@ -20,6 +21,21 @@ const adminNav = [
 ] as const;
 
 export function AdminShell({ title, description, section }: AdminShellProps) {
+  return (
+    <AdminShellContent
+      title={title}
+      description={description}
+      section={section}
+    />
+  );
+}
+
+async function AdminShellContent({
+  title,
+  description,
+  section,
+}: AdminShellProps) {
+  const { profile } = await getCurrentUserProfile();
   const revenueCents = demoOrders.reduce(
     (total, order) => total + order.totalCents,
     0,
@@ -48,6 +64,11 @@ export function AdminShell({ title, description, section }: AdminShellProps) {
         <div>
           <h1 className="text-3xl font-semibold">{title}</h1>
           <p className="mt-2 text-muted-foreground">{description}</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {profile?.role === "admin"
+              ? `Signed in as ${profile.email}`
+              : "Admin data uses demo values until Supabase admin access is configured."}
+          </p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           <Card>

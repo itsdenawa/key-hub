@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start",
     "check": "biome check .",
+    "db:reset": "bunx supabase db reset",
+    "db:start": "bunx supabase start",
+    "db:types": "bunx supabase gen types typescript --local > src/shared/types/database.ts",
     "format": "biome format --write .",
     "lint": "biome lint .",
     "typecheck": "tsc --noEmit"

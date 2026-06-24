@@ -2,7 +2,7 @@ import type { CatalogSort, Product } from "@/shared/types/catalog";
 
 export const products: Product[] = [
   {
-    id: "prod-keyhub-launch-kit",
+    id: "00000000-0000-4000-8000-000000000001",
     title: "Launch Kit Pro",
     slug: "launch-kit-pro",
     categorySlug: "developer",
@@ -29,7 +29,7 @@ export const products: Product[] = [
     createdAt: "2026-06-01T09:00:00.000Z",
   },
   {
-    id: "prod-design-vault",
+    id: "00000000-0000-4000-8000-000000000002",
     title: "Design Vault",
     slug: "design-vault",
     categorySlug: "design",
@@ -56,7 +56,7 @@ export const products: Product[] = [
     createdAt: "2026-06-07T11:30:00.000Z",
   },
   {
-    id: "prod-automation-key",
+    id: "00000000-0000-4000-8000-000000000003",
     title: "Automation Key",
     slug: "automation-key",
     categorySlug: "productivity",
@@ -83,7 +83,7 @@ export const products: Product[] = [
     createdAt: "2026-06-13T14:10:00.000Z",
   },
   {
-    id: "prod-dev-pack",
+    id: "00000000-0000-4000-8000-000000000004",
     title: "API Starter Pack",
     slug: "api-starter-pack",
     categorySlug: "developer",
