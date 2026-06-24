@@ -37,6 +37,42 @@ export const categories: Category[] = [
     isActive: true,
     sortOrder: 4,
   },
+  {
+    id: "cat-templates",
+    name: "Templates",
+    slug: "templates",
+    description: "Design systems, UI kits, and productivity templates.",
+    imageUrl: "/products/design-vault.png",
+    isActive: true,
+    sortOrder: 5,
+  },
+  {
+    id: "cat-courses",
+    name: "Courses",
+    slug: "courses",
+    description: "Compact learning packs for technical and creative skills.",
+    imageUrl: "/products/dev-pack.png",
+    isActive: true,
+    sortOrder: 6,
+  },
+  {
+    id: "cat-audio",
+    name: "Audio",
+    slug: "audio",
+    description: "Audio packs, loops, and production tools.",
+    imageUrl: "/products/automation-key.png",
+    isActive: true,
+    sortOrder: 7,
+  },
+  {
+    id: "cat-graphics",
+    name: "Graphics",
+    slug: "graphics",
+    description: "Creative assets for visual production.",
+    imageUrl: "/products/figma-professional-tile.png",
+    isActive: true,
+    sortOrder: 8,
+  },
 ];
 
 export function getCategoryBySlug(slug: string) {
