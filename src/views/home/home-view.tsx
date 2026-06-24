@@ -17,41 +17,44 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-import { getStorefrontCategories } from "@/entities/category/repository";
 import { getStorefrontProducts } from "@/entities/product/repository";
+import { AddToCartButton } from "@/features/cart/add-to-cart-button";
+import { formatMoney } from "@/shared/lib/format";
 import { cn } from "@/shared/lib/utils";
+import type { Product } from "@/shared/types/catalog";
 import { Badge } from "@/shared/ui/badge";
 import { buttonVariants } from "@/shared/ui/button";
-import { ProductGrid } from "@/widgets/product-grid/product-grid";
 
 export async function HomeView() {
-  const [categories, products] = await Promise.all([
-    getStorefrontCategories(),
-    getStorefrontProducts(),
-  ]);
+  const products = await getStorefrontProducts();
   const featuredProducts = products.slice(0, 6);
   const heroProducts = products.slice(0, 4);
 
   return (
     <main className="overflow-hidden bg-[#050814] text-white">
-      <section className="relative border-b border-white/10">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_30%,rgba(124,58,237,0.34),transparent_34%),radial-gradient(circle_at_85%_68%,rgba(6,182,212,0.14),transparent_24%),linear-gradient(180deg,rgba(5,8,20,0)_0%,rgba(5,8,20,1)_100%)]" />
-        <div className="mx-auto grid min-h-[620px] w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_520px] lg:px-8 lg:py-16">
+      <section className="relative">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#050814_0%,rgba(5,8,20,0.96)_42%,rgba(5,8,20,0.5)_70%,#050814_100%),radial-gradient(circle_at_75%_42%,rgba(124,58,237,0.42),transparent_36%),radial-gradient(circle_at_88%_66%,rgba(6,182,212,0.16),transparent_24%)]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(139,92,246,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.22)_1px,transparent_1px)] [background-size:56px_56px]" />
+        <div className="mx-auto grid min-h-[560px] w-full max-w-[1290px] gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_570px] lg:px-8 lg:py-12">
           <div className="relative z-10 flex max-w-3xl flex-col justify-center gap-7">
-            <Badge className="w-fit border-violet-400/30 bg-violet-500/15 text-violet-200">
+            <Badge className="w-fit rounded-full border-violet-400/30 bg-violet-500/18 px-3 py-1 text-[11px] font-bold uppercase text-violet-200">
               <Zap className="mr-1 size-3" />
               Instant digital delivery
             </Badge>
-            <div className="space-y-5">
-              <h1 className="max-w-4xl text-5xl font-black leading-tight sm:text-6xl">
-                Digital products for{" "}
+            <div className="space-y-6">
+              <h1 className="max-w-[720px] text-[42px] font-black leading-[1.12] sm:text-[56px] lg:text-[58px]">
+                Digital products
+                <br />
+                for{" "}
                 <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-300 bg-clip-text text-transparent">
                   work, games and creativity
                 </span>
               </h1>
-              <p className="max-w-2xl text-lg leading-8 text-slate-300">
+              <p className="max-w-xl text-lg leading-8 text-slate-300">
                 Games, software, subscriptions, keys, templates, courses and
-                more. Buy safely and get access instantly.
+                more.
+                <br />
+                Buy and get access instantly.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -59,32 +62,32 @@ export async function HomeView() {
                 href="/products"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "bg-gradient-to-r from-violet-500 to-blue-500 text-white shadow-[0_0_32px_rgba(124,58,237,0.48)] hover:from-violet-400 hover:to-blue-400",
+                  "h-14 rounded-lg bg-gradient-to-r from-violet-500 to-blue-500 px-7 text-base font-bold text-white shadow-[0_0_34px_rgba(124,58,237,0.58)] hover:from-violet-400 hover:to-blue-400",
                 )}
               >
-                Browse catalog
+                Go to catalog
                 <ArrowRight data-icon="inline-end" />
               </Link>
               <Link
                 href="/account/orders"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
-                  "border-white/10 bg-white/5 text-white hover:bg-white/10",
+                  "h-14 rounded-lg border-white/15 bg-white/[0.045] px-7 text-base font-bold text-white hover:bg-white/10",
                 )}
               >
                 How it works
               </Link>
             </div>
-            <div className="grid gap-4 pt-4 sm:grid-cols-3">
+            <div className="grid max-w-[620px] gap-5 pt-5 sm:grid-cols-3">
               <HeroFeature
                 icon={Package}
                 title="Instant delivery"
-                body="Right after payment"
+                body="Immediately after payment"
               />
               <HeroFeature
                 icon={ShieldCheck}
                 title="Secure payment"
-                body="Protected checkout"
+                body="Encrypted checkout"
               />
               <HeroFeature
                 icon={Headphones}
@@ -97,8 +100,8 @@ export async function HomeView() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-        <div className="grid rounded-lg border border-white/10 bg-white/[0.04] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:grid-cols-2 lg:grid-cols-9">
+      <section className="relative z-20 mx-auto -mt-5 w-full max-w-[1290px] px-4 sm:px-6 lg:px-8">
+        <div className="grid overflow-hidden rounded-lg border border-white/10 bg-[#0b1020]/92 px-2 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_60px_rgba(0,0,0,0.32)] backdrop-blur sm:grid-cols-2 lg:grid-cols-10">
           {[
             ["Popular", Sparkles],
             ["Games", Gamepad2],
@@ -109,46 +112,49 @@ export async function HomeView() {
             ["Courses", Package],
             ["Audio", Music],
             ["Graphics", Palette],
+            ["All categories", Grid3X3],
           ].map(([label, Icon], index) => (
             <Link
               key={String(label)}
               href={index === 0 ? "/products" : `/products?search=${label}`}
               className={cn(
-                "flex min-h-16 flex-col items-center justify-center gap-2 rounded-md px-3 py-2 text-sm text-slate-300 transition hover:bg-white/5 hover:text-white",
-                index === 0 && "bg-violet-500/10 text-violet-300",
+                "relative flex min-h-[78px] flex-col items-center justify-center gap-2 px-3 py-2 text-sm text-slate-300 transition hover:bg-white/[0.04] hover:text-white lg:border-l lg:border-white/8 lg:first:border-l-0",
+                index === 0 &&
+                  "text-violet-300 after:absolute after:bottom-0 after:h-0.5 after:w-16 after:rounded-full after:bg-violet-500",
               )}
             >
-              <Icon className="size-5" />
+              <Icon className="size-6" />
               <span>{String(label)}</span>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <section className="mx-auto w-full max-w-[1290px] px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold">Popular products</h2>
-            <p className="mt-2 text-sm text-slate-400">
-              Best-selling keys, subscriptions and digital toolkits.
-            </p>
           </div>
           <Link
             href="/products"
             className={cn(
               buttonVariants({ variant: "outline" }),
-              "border-white/10 bg-white/5 text-white hover:bg-white/10",
+              "h-12 rounded-lg border-white/10 bg-white/[0.045] px-5 text-white hover:bg-white/10",
             )}
           >
             View all
             <ArrowRight className="size-4" />
           </Link>
         </div>
-        <ProductGrid products={featuredProducts} />
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
+          {featuredProducts.map((product) => (
+            <HomeProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </section>
 
-      <section className="mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+      <section className="mx-auto w-full max-w-[1290px] px-4 pb-12 sm:px-6 lg:px-8">
+        <div className="rounded-lg border border-white/10 bg-[#0b1020]/80 p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
           <h2 className="text-center text-2xl font-bold">
             Why choose{" "}
             <span className="bg-gradient-to-r from-violet-400 to-cyan-300 bg-clip-text text-transparent">
@@ -184,23 +190,6 @@ export async function HomeView() {
           </div>
         </div>
       </section>
-
-      <section className="mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
-        <div className="grid gap-4 md:grid-cols-3">
-          {categories.slice(0, 3).map((category) => (
-            <Link
-              key={category.slug}
-              href={`/products?category=${category.slug}`}
-              className="rounded-lg border border-white/10 bg-white/[0.04] p-5 transition hover:border-violet-400/50 hover:bg-white/[0.07]"
-            >
-              <p className="font-semibold text-white">{category.name}</p>
-              <p className="mt-2 text-sm leading-6 text-slate-400">
-                {category.description}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
     </main>
   );
 }
@@ -216,7 +205,7 @@ type HeroFeatureProps = {
 function HeroFeature({ body, icon: Icon, title }: HeroFeatureProps) {
   return (
     <div className="flex items-center gap-3">
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-violet-300">
+      <span className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] text-violet-300">
         <Icon className="size-5" />
       </span>
       <div>
@@ -235,22 +224,27 @@ function HeroVault({ products }: HeroVaultProps) {
   return (
     <div className="relative z-10 hidden items-center justify-center lg:flex">
       <div className="relative h-[500px] w-full">
-        <div className="absolute left-1/2 top-[58%] h-48 w-72 -translate-x-1/2 rounded-lg border border-violet-400/40 bg-[#11152b] shadow-[0_0_90px_rgba(124,58,237,0.58)]">
-          <div className="absolute inset-x-6 top-6 h-16 rounded-md border border-violet-400/30 bg-violet-500/15" />
-          <div className="absolute inset-x-10 bottom-8 rounded-md border border-violet-400/30 bg-[#080b19] py-4 text-center text-3xl font-black text-violet-400">
-            KEYHUB
+        <div className="absolute inset-x-10 bottom-1 h-24 rounded-[50%] bg-violet-600/30 blur-3xl" />
+        <div className="absolute left-1/2 top-[56%] h-56 w-[360px] -translate-x-1/2 rounded-lg border border-violet-400/35 bg-[#11152b] shadow-[0_0_100px_rgba(124,58,237,0.64)] [transform:translateX(-50%)_perspective(600px)_rotateX(5deg)]">
+          <div className="absolute inset-x-0 -top-8 mx-auto h-16 w-[330px] rounded-lg border border-violet-400/30 bg-[#171c3a] shadow-[0_0_55px_rgba(168,85,247,0.45)] [transform:perspective(500px)_rotateX(42deg)]" />
+          <div className="absolute inset-x-8 top-7 h-16 rounded-md border border-violet-400/30 bg-violet-500/15 shadow-[inset_0_0_28px_rgba(124,58,237,0.35)]" />
+          <div className="absolute inset-x-12 bottom-9 rounded-md border border-violet-400/30 bg-[#080b19] py-5 text-center text-4xl font-black text-violet-400 shadow-[0_0_30px_rgba(124,58,237,0.35)]">
+            KEY
+            <span className="text-cyan-300">HUB</span>
           </div>
+          <div className="absolute -left-5 top-14 h-24 w-8 rounded border border-violet-400/20 bg-black/25" />
+          <div className="absolute -right-5 top-14 h-24 w-8 rounded border border-violet-400/20 bg-black/25" />
         </div>
-        <div className="absolute left-1/2 top-[54%] h-16 w-80 -translate-x-1/2 rounded-full bg-violet-500/50 blur-3xl" />
+        <div className="absolute left-1/2 top-[50%] h-20 w-96 -translate-x-1/2 rounded-full bg-violet-500/60 blur-3xl" />
         {products.map((product, index) => (
           <div
             key={product.id}
             className={cn(
-              "absolute overflow-hidden rounded-xl border border-cyan-300/25 bg-white/10 p-2 shadow-[0_0_38px_rgba(34,211,238,0.22)] backdrop-blur",
-              index === 0 && "left-20 top-20 rotate-[-10deg]",
-              index === 1 && "right-20 top-28 rotate-[12deg]",
-              index === 2 && "left-32 top-52 rotate-[6deg]",
-              index === 3 && "right-32 top-60 rotate-[-8deg]",
+              "absolute overflow-hidden rounded-xl border border-cyan-300/30 bg-[#101936]/85 p-2 shadow-[0_0_42px_rgba(34,211,238,0.28)] backdrop-blur",
+              index === 0 && "left-20 top-12 rotate-[-12deg]",
+              index === 1 && "right-16 top-20 rotate-[13deg]",
+              index === 2 && "left-36 top-48 rotate-[7deg]",
+              index === 3 && "right-36 top-56 rotate-[-9deg]",
             )}
           >
             <Image
@@ -258,10 +252,56 @@ function HeroVault({ products }: HeroVaultProps) {
               alt={product.title}
               width={150}
               height={190}
-              className="h-40 w-28 rounded-lg object-cover"
+              className="h-44 w-32 rounded-lg object-cover"
             />
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+type HomeProductCardProps = {
+  product: Product;
+};
+
+function HomeProductCard({ product }: HomeProductCardProps) {
+  return (
+    <div className="group overflow-hidden rounded-lg border border-white/10 bg-[#0d1325] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:-translate-y-0.5 hover:border-violet-400/50">
+      <Link
+        href={`/products/${product.slug}`}
+        className="relative block overflow-hidden bg-[#10172a]"
+      >
+        <Image
+          src={product.imageUrl}
+          alt={product.title}
+          width={420}
+          height={360}
+          className="aspect-[1.07] w-full object-cover transition duration-300 group-hover:scale-[1.04]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d1325]/70 via-transparent to-transparent" />
+      </Link>
+      <div className="p-4">
+        <Link
+          href={`/products/${product.slug}`}
+          className="line-clamp-2 min-h-[44px] font-semibold leading-5 text-white hover:text-violet-300"
+        >
+          {product.title}
+        </Link>
+        <p className="mt-1 line-clamp-1 text-sm text-slate-400">
+          {product.categoryName}
+        </p>
+        <div className="mt-5 flex items-center justify-between">
+          <p className="text-lg font-black text-white">
+            {formatMoney(product.priceCents)}
+          </p>
+          <AddToCartButton
+            product={product}
+            size="icon"
+            showLabel={false}
+            className="size-9 border border-white/10 bg-white/[0.055] text-white hover:bg-violet-500/20"
+          />
+        </div>
       </div>
     </div>
   );

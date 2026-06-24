@@ -8,20 +8,20 @@ import { Input } from "@/shared/ui/input";
 export function SiteFooter() {
   return (
     <footer className="border-t border-white/10 bg-[#050814]">
-      <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-10 text-sm text-muted-foreground sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr_1.5fr] lg:px-8">
+      <div className="mx-auto grid w-full max-w-[1290px] gap-10 px-4 py-9 text-sm text-muted-foreground sm:px-6 md:grid-cols-[1.5fr_1fr_1fr_1fr_1.6fr] lg:px-8">
         <div>
           <Link href="/" className="flex items-center gap-2 font-semibold">
-            <span className="flex size-8 items-center justify-center rounded-lg border border-cyan-300/30 bg-violet-500/15 text-cyan-300">
+            <span className="flex size-9 items-center justify-center rounded-md border border-cyan-300/40 bg-violet-500/18 text-cyan-300">
               <KeyRound className="size-4" />
             </span>
-            <span className="text-lg font-black uppercase text-white">
+            <span className="text-xl font-black uppercase text-white">
               Key<span className="text-violet-400">Hub</span>
             </span>
           </Link>
-          <p className="mt-5 max-w-52 leading-6">
+          <p className="mt-5 max-w-56 leading-6">
             Digital goods store with instant delivery and protected downloads.
           </p>
-          <p className="mt-8 text-xs">
+          <p className="mt-10 text-xs">
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
         </div>
