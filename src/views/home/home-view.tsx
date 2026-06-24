@@ -33,15 +33,15 @@ export async function HomeView() {
     <main className="overflow-hidden bg-[#050814] text-white">
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#050814_0%,rgba(5,8,20,0.96)_42%,rgba(5,8,20,0.5)_70%,#050814_100%),radial-gradient(circle_at_75%_42%,rgba(124,58,237,0.42),transparent_36%),radial-gradient(circle_at_88%_66%,rgba(6,182,212,0.16),transparent_24%)]" />
-        <div className="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(139,92,246,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.22)_1px,transparent_1px)] [background-size:56px_56px]" />
-        <div className="mx-auto grid min-h-[470px] w-full max-w-[948px] gap-4 px-4 py-6 sm:px-6 lg:grid-cols-[590px_1fr] lg:px-0 lg:py-0">
-          <div className="relative z-10 flex max-w-[590px] flex-col justify-center gap-5">
+        <HeroVault />
+        <div className="mx-auto min-h-[470px] w-full max-w-[948px] px-4 py-6 sm:px-6 lg:px-0 lg:py-0">
+          <div className="relative z-10 flex max-w-[560px] flex-col justify-center gap-5">
             <Badge className="w-fit rounded-full border-violet-400/30 bg-violet-500/18 px-3 py-1 text-[11px] font-bold uppercase text-violet-200">
               <Zap className="mr-1 size-3" />
               Instant digital delivery
             </Badge>
             <div className="space-y-4">
-              <h1 className="max-w-[590px] text-[38px] font-black leading-[1.16] sm:text-[38px] lg:text-[38px]">
+              <h1 className="max-w-[560px] text-[38px] font-black leading-[1.16] sm:text-[37px] lg:text-[37px]">
                 Digital products
                 <br />
                 for{" "}
@@ -95,7 +95,6 @@ export async function HomeView() {
               />
             </div>
           </div>
-          <HeroVault />
         </div>
       </section>
 
@@ -217,18 +216,7 @@ function HeroFeature({ body, icon: Icon, title }: HeroFeatureProps) {
 
 function HeroVault() {
   return (
-    <div className="relative z-10 hidden min-h-[470px] items-center justify-center lg:flex">
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[#050814] via-[#050814]/82 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-[#050814] to-transparent" />
-      <Image
-        src="/hero/keyhub-reference-hero.png"
-        alt="KeyHub neon digital goods vault"
-        width={1254}
-        height={1254}
-        priority
-        className="h-[465px] w-[465px] translate-x-4 translate-y-4 object-cover"
-      />
-    </div>
+    <div className="pointer-events-none absolute inset-0 z-0 hidden bg-[url('/hero/keyhub-hero-background.png')] bg-cover bg-center bg-no-repeat 2xl:bg-[length:auto_620px] 2xl:bg-[position:calc(50%+180px)_top] lg:block" />
   );
 }
 
