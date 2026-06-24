@@ -8,14 +8,16 @@ import { Button } from "@/shared/ui/button";
 
 type AddToCartButtonProps = {
   product: Product;
-  size?: "default" | "sm" | "lg";
+  size?: "default" | "sm" | "lg" | "icon";
   className?: string;
+  showLabel?: boolean;
 };
 
 export function AddToCartButton({
   product,
   size = "default",
   className,
+  showLabel = true,
 }: AddToCartButtonProps) {
   const addProduct = useCartStore((state) => state.addProduct);
 
@@ -25,9 +27,10 @@ export function AddToCartButton({
       size={size}
       className={className}
       onClick={() => addProduct(product)}
+      aria-label={showLabel ? undefined : `Add ${product.title} to cart`}
     >
       <ShoppingCart data-icon="inline-start" />
-      Add to cart
+      {showLabel ? "Add to cart" : null}
     </Button>
   );
 }

@@ -16,11 +16,19 @@ export function CartSummary() {
     <Link
       href="/cart"
       aria-label="Open cart summary"
-      className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+      className={cn(
+        buttonVariants({ variant: "outline", size: "sm" }),
+        "relative border-white/10 bg-white/5 text-white hover:bg-white/10",
+      )}
     >
       <ShoppingBag data-icon="inline-start" />
-      <span>{itemsCount} items</span>
-      <span className="text-muted-foreground">{formatMoney(totalCents)}</span>
+      <span>Cart</span>
+      <span className="rounded-full bg-violet-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+        {itemsCount}
+      </span>
+      <span className="hidden text-muted-foreground lg:inline">
+        {formatMoney(totalCents)}
+      </span>
     </Link>
   );
 }
