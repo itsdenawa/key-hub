@@ -1,11 +1,5 @@
-import { AccountShell } from "@/views/account/account-shell";
+import { OrdersView } from "@/views/account/orders-view";
 
 export default function AccountOrdersPage() {
-  return (
-    <AccountShell
-      section="orders"
-      title="Orders"
-      description="Review purchases, fulfillment status, and entitlement-backed downloads."
-    />
-  );
+  return <OrdersView />;
 }

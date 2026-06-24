@@ -1,11 +1,5 @@
-import { AccountShell } from "@/views/account/account-shell";
+import { ProfileView } from "@/views/account/profile-view";
 
 export default function AccountProfilePage() {
-  return (
-    <AccountShell
-      section="profile"
-      title="Profile"
-      description="Manage customer profile fields before Supabase auth is wired in."
-    />
-  );
+  return <ProfileView />;
 }
