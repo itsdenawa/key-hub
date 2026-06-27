@@ -17,9 +17,11 @@ export async function GET(_request: Request, { params }: DownloadRouteProps) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json(
-      { error: "Sign in to download." },
-      { status: 401 },
+    return NextResponse.redirect(
+      new URL(
+        `/auth/sign-in?next=${encodeURIComponent(`/download/${assetId}`)}`,
+        _request.url,
+      ),
     );
   }
 
@@ -31,7 +33,9 @@ export async function GET(_request: Request, { params }: DownloadRouteProps) {
     .single();
 
   if (assetError || !asset) {
-    return NextResponse.json({ error: "Asset not found." }, { status: 404 });
+    return NextResponse.redirect(
+      new URL("/account/orders?download=missing", _request.url),
+    );
   }
 
   const { data: entitlement } = await supabase
@@ -44,9 +48,8 @@ export async function GET(_request: Request, { params }: DownloadRouteProps) {
     .maybeSingle();
 
   if (!entitlement) {
-    return NextResponse.json(
-      { error: "No active entitlement for this asset." },
-      { status: 403 },
+    return NextResponse.redirect(
+      new URL("/account/orders?download=denied", _request.url),
     );
   }
 

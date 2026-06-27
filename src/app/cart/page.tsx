@@ -7,6 +7,15 @@ export const metadata: Metadata = {
   description: "Review KeyHub digital goods before checkout.",
 };
 
-export default function CartPage() {
-  return <CartView />;
+type CartPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function CartPage({ searchParams }: CartPageProps) {
+  const params = await searchParams;
+  const checkoutState = Array.isArray(params.checkout)
+    ? params.checkout[0]
+    : params.checkout;
+
+  return <CartView checkoutState={checkoutState} />;
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import type Stripe from "stripe";
 
 import { getStorefrontProducts } from "@/entities/product/repository";
 import { checkoutSchema } from "@/entities/product/schema";
@@ -7,7 +8,17 @@ import { createSupabaseServerClient } from "@/shared/api/supabase/server";
 import { siteConfig } from "@/shared/config/site";
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  let body: unknown;
+
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Checkout request body must be valid JSON." },
+      { status: 400 },
+    );
+  }
+
   const parsed = checkoutSchema.safeParse(body);
 
   if (!parsed.success) {
@@ -29,12 +40,30 @@ export async function POST(request: Request) {
     );
   }
 
-  const products = await getStorefrontProducts();
-  const items = parsed.data.items.map((item) => {
-    const product = products.find((product) => product.id === item.productId);
+  let stripe: ReturnType<typeof createStripeClient>;
 
-    if (!product) {
-      throw new Error(`Product ${item.productId} was not found.`);
+  try {
+    stripe = createStripeClient();
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Stripe is not configured for checkout.",
+      },
+      { status: 500 },
+    );
+  }
+
+  const products = await getStorefrontProducts();
+  const items = parsed.data.items.flatMap((item) => {
+    const product = products.find(
+      (candidate) => candidate.id === item.productId,
+    );
+
+    if (!product || product.status !== "active") {
+      return [];
     }
 
     return {
@@ -43,10 +72,24 @@ export async function POST(request: Request) {
     };
   });
 
+  if (items.length !== parsed.data.items.length) {
+    return NextResponse.json(
+      { error: "One or more cart items are no longer available." },
+      { status: 400 },
+    );
+  }
+
   const totalCents = items.reduce(
     (total, item) => total + item.product.priceCents * item.quantity,
     0,
   );
+
+  if (totalCents <= 0) {
+    return NextResponse.json(
+      { error: "Cart total must be greater than zero." },
+      { status: 400 },
+    );
+  }
 
   const { data: order, error: orderError } = await supabase
     .from("orders")
@@ -89,19 +132,33 @@ export async function POST(request: Request) {
     quantity,
   }));
 
-  const stripe = createStripeClient();
-  const session = await stripe.checkout.sessions.create({
-    mode: "payment",
-    line_items: lineItems,
-    client_reference_id: order.id,
-    customer_email: user.email,
-    metadata: {
-      orderId: order.id,
-      userId: user.id,
-    },
-    success_url: `${siteConfig.url}/account/orders?checkout=success`,
-    cancel_url: `${siteConfig.url}/products?checkout=cancelled`,
-  });
+  let session: Stripe.Checkout.Session;
+
+  try {
+    session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      line_items: lineItems,
+      allow_promotion_codes: true,
+      client_reference_id: order.id,
+      customer_email: user.email,
+      metadata: {
+        orderId: order.id,
+        userId: user.id,
+      },
+      success_url: `${siteConfig.url}/account/orders?checkout=success`,
+      cancel_url: `${siteConfig.url}/cart?checkout=cancelled`,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Stripe checkout session could not be created.",
+      },
+      { status: 502 },
+    );
+  }
 
   await supabase
     .from("orders")

@@ -12,7 +12,6 @@ type CheckoutButtonProps = {
 
 export function CheckoutButton({ disabled }: CheckoutButtonProps) {
   const items = useCartStore((state) => state.items);
-  const clearCart = useCartStore((state) => state.clearCart);
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
@@ -49,7 +48,6 @@ export function CheckoutButton({ disabled }: CheckoutButtonProps) {
       return;
     }
 
-    clearCart();
     window.location.href = payload.url;
   }
 
