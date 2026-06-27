@@ -89,8 +89,8 @@ type AdminNavProps = {
 
 export function AdminNav({ section }: AdminNavProps) {
   return (
-    <aside className="flex h-full min-h-[980px] flex-col border-white/10 bg-[#071020]/90 p-4">
-      <div className="mb-7 flex items-center gap-3 px-2">
+    <aside className="flex min-w-0 flex-col overflow-hidden border-white/10 bg-[#071020]/90 p-4 lg:h-full lg:min-h-[980px] lg:overflow-visible">
+      <div className="mb-4 flex items-center gap-3 px-2 lg:mb-7">
         <div className="grid size-10 place-items-center rounded-lg border border-violet-400/35 bg-violet-500/15 text-violet-300">
           <ShoppingBag className="size-5" />
         </div>
@@ -100,7 +100,10 @@ export function AdminNav({ section }: AdminNavProps) {
         </div>
       </div>
 
-      <nav className="space-y-1" aria-label="Admin">
+      <nav
+        className="-mx-1 flex w-full min-w-0 gap-2 overflow-x-auto px-1 pb-2 lg:mx-0 lg:block lg:space-y-1 lg:overflow-visible lg:px-0 lg:pb-0"
+        aria-label="Admin"
+      >
         {adminNav.map((item) => {
           const Icon = item.icon;
           const isActive = item.section === section;
@@ -110,7 +113,7 @@ export function AdminNav({ section }: AdminNavProps) {
               key={`${item.href}-${item.label}`}
               href={item.href}
               className={cn(
-                "flex h-12 items-center justify-between rounded-lg px-3 text-sm font-semibold transition",
+                "flex h-12 shrink-0 items-center justify-between gap-3 rounded-lg px-3 text-sm font-semibold transition lg:w-full lg:shrink",
                 isActive
                   ? "bg-gradient-to-r from-violet-600 to-violet-900/70 text-white shadow-lg shadow-violet-950/30"
                   : "text-slate-300 hover:bg-white/[0.055] hover:text-white",
@@ -130,7 +133,7 @@ export function AdminNav({ section }: AdminNavProps) {
         })}
       </nav>
 
-      <div className="mt-8 rounded-lg border border-white/10 bg-white/[0.025] p-4">
+      <div className="mt-5 hidden rounded-lg border border-white/10 bg-white/[0.025] p-4 lg:mt-8 lg:block">
         <h2 className="text-sm font-bold text-white">Quick actions</h2>
         <div className="mt-4 space-y-3">
           {quickActions.map((item) => {
@@ -150,7 +153,7 @@ export function AdminNav({ section }: AdminNavProps) {
         </div>
       </div>
 
-      <div className="mt-auto space-y-4 pt-8">
+      <div className="mt-auto hidden space-y-4 pt-8 lg:block">
         <div className="rounded-lg border border-white/10 bg-white/[0.025] p-4">
           <p className="text-xs text-slate-500">Current plan</p>
           <p className="mt-2 text-lg font-bold text-violet-300">Business</p>

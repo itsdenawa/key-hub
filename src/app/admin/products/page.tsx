@@ -1,5 +1,11 @@
 import { ProductsView } from "@/views/admin/products-view";
 
-export default function AdminProductsPage() {
-  return <ProductsView />;
+type AdminProductsPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function AdminProductsPage({
+  searchParams,
+}: AdminProductsPageProps) {
+  return <ProductsView searchParams={await searchParams} />;
 }

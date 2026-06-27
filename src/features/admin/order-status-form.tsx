@@ -4,6 +4,7 @@ import { useActionState } from "react";
 
 import { initialAdminActionState } from "@/features/admin/action-state";
 import { updateOrderStatusAction } from "@/features/admin/actions";
+import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { Select } from "@/shared/ui/select";
 
@@ -24,23 +25,37 @@ export function OrderStatusForm({ order, canSave }: OrderStatusFormProps) {
   );
 
   return (
-    <form action={formAction} className="grid gap-2 sm:grid-cols-[1fr_auto]">
+    <form action={formAction} className="grid min-w-[260px] gap-2">
       <input type="hidden" name="id" value={order.id} />
-      <Select name="status" defaultValue={order.status}>
-        <option value="pending">Pending</option>
-        <option value="paid">Paid</option>
-        <option value="fulfilled">Fulfilled</option>
-        <option value="canceled">Canceled</option>
-        <option value="refunded">Refunded</option>
-      </Select>
-      <Button type="submit" disabled={!canSave || isPending} variant="outline">
-        {isPending ? "Saving..." : "Update"}
-      </Button>
+      <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+        <Select
+          className="h-9 border-white/10 bg-[#0a1223] text-white focus-visible:ring-violet-400/40"
+          name="status"
+          defaultValue={order.status}
+        >
+          <option value="pending">Pending</option>
+          <option value="paid">Paid</option>
+          <option value="fulfilled">Fulfilled</option>
+          <option value="canceled">Canceled</option>
+          <option value="refunded">Refunded</option>
+        </Select>
+        <Button
+          className="border-white/10 bg-white/[0.035] text-slate-200 hover:bg-violet-500/10 hover:text-white"
+          type="submit"
+          disabled={!canSave || isPending}
+          variant="outline"
+        >
+          {isPending ? "Saving..." : "Update"}
+        </Button>
+      </div>
       {state.message ? (
         <p
-          className={`text-xs ${
-            state.status === "success" ? "text-emerald-600" : "text-destructive"
-          } sm:col-span-2`}
+          className={cn(
+            "text-xs",
+            state.status === "success"
+              ? "text-emerald-600"
+              : "text-destructive",
+          )}
         >
           {state.message}
         </p>

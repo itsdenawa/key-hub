@@ -1,5 +1,11 @@
 import { CategoriesView } from "@/views/admin/categories-view";
 
-export default function AdminCategoriesPage() {
-  return <CategoriesView />;
+type AdminCategoriesPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function AdminCategoriesPage({
+  searchParams,
+}: AdminCategoriesPageProps) {
+  return <CategoriesView searchParams={await searchParams} />;
 }
