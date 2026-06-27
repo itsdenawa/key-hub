@@ -3,6 +3,7 @@ import {
   Headphones,
   Heart,
   LogOut,
+  MapPin,
   Package,
   ReceiptText,
   ShieldCheck,
@@ -11,6 +12,7 @@ import {
 import Link from "next/link";
 import type { ComponentType } from "react";
 
+import { signOutAction } from "@/features/auth/actions";
 import { cn } from "@/shared/lib/utils";
 
 export type AccountSection = "profile" | "orders" | "wishlist" | "addresses";
@@ -33,7 +35,6 @@ const accountNav: AccountNavItem[] = [
     href: "/account/orders",
     icon: Package,
     label: "My purchases",
-    section: "orders",
   },
   {
     href: "/account/orders",
@@ -46,6 +47,12 @@ const accountNav: AccountNavItem[] = [
     icon: Heart,
     label: "Favorites",
     section: "wishlist",
+  },
+  {
+    href: "/account/addresses",
+    icon: MapPin,
+    label: "Billing addresses",
+    section: "addresses",
   },
   {
     href: "/account/profile",
@@ -98,13 +105,15 @@ export function AccountNav({ section }: AccountNavProps) {
       </div>
 
       <div className="mt-40 border-t border-white/10 pt-3 lg:mt-52">
-        <button
-          type="button"
-          className="flex h-11 w-full items-center gap-3 rounded-lg border border-red-400/35 px-3 text-sm font-semibold text-red-300 transition hover:bg-red-500/10"
-        >
-          <LogOut className="size-4" />
-          Sign out
-        </button>
+        <form action={signOutAction}>
+          <button
+            type="submit"
+            className="flex h-11 w-full items-center gap-3 rounded-lg border border-red-400/35 px-3 text-sm font-semibold text-red-300 transition hover:bg-red-500/10"
+          >
+            <LogOut className="size-4" />
+            Sign out
+          </button>
+        </form>
       </div>
     </nav>
   );

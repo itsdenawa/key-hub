@@ -11,7 +11,7 @@ import {
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import { CartLineItem } from "@/features/cart/cart-line-item";
 import { useCartStore } from "@/features/cart/cart-store";
@@ -29,6 +29,21 @@ export function CartView({ checkoutState }: CartViewProps) {
   const clearCart = useCartStore((state) => state.clearCart);
   const itemsCount = useCartStore((state) => state.getItemsCount());
   const totalCents = useCartStore((state) => state.getTotalCents());
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  if (!isHydrated) {
+    return (
+      <main className="bg-[#050814] text-white">
+        <section className="mx-auto min-h-[520px] w-full max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8 2xl:px-0">
+          <div className="h-[360px] animate-pulse rounded-lg border border-white/10 bg-[#071020]/85" />
+        </section>
+      </main>
+    );
+  }
 
   if (items.length === 0) {
     return (

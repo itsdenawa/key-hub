@@ -21,6 +21,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { getStorefrontProducts } from "@/entities/product/repository";
+import { ProfileForm } from "@/features/account/profile-form";
 import { formatMoney } from "@/shared/lib/format";
 import { cn } from "@/shared/lib/utils";
 import type { Product } from "@/shared/types/catalog";
@@ -78,6 +79,12 @@ export async function ProfileView() {
             </div>
 
             <SecurityPanel profileEmail={profile.email} />
+            <ProfileForm
+              canSave={!profile.isDemo}
+              email={profile.email}
+              fullName={profile.fullName}
+              role={profile.role}
+            />
             <BenefitsBar />
           </section>
         </div>

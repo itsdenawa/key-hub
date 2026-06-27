@@ -2,6 +2,7 @@
 
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { useCartStore } from "@/features/cart/cart-store";
 import { formatMoney } from "@/shared/lib/format";
@@ -11,6 +12,14 @@ import { buttonVariants } from "@/shared/ui/button";
 export function CartSummary() {
   const itemsCount = useCartStore((state) => state.getItemsCount());
   const totalCents = useCartStore((state) => state.getTotalCents());
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  const displayItemsCount = isHydrated ? itemsCount : 0;
+  const displayTotalCents = isHydrated ? totalCents : 0;
 
   return (
     <Link
@@ -24,9 +33,9 @@ export function CartSummary() {
       <ShoppingBag data-icon="inline-start" />
       <span>Cart</span>
       <span className="rounded-full bg-violet-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
-        {itemsCount}
+        {displayItemsCount}
       </span>
-      <span className="sr-only">{formatMoney(totalCents)}</span>
+      <span className="sr-only">{formatMoney(displayTotalCents)}</span>
     </Link>
   );
 }
