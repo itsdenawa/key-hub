@@ -19,6 +19,7 @@ import { CheckoutButton } from "@/features/cart/checkout-button";
 import { CheckoutReturnHandler } from "@/features/cart/checkout-return-handler";
 import { formatMoney } from "@/shared/lib/format";
 import { buttonVariants } from "@/shared/ui/button";
+import { useToast } from "@/shared/ui/toast";
 
 type CartViewProps = {
   checkoutState?: string;
@@ -30,10 +31,20 @@ export function CartView({ checkoutState }: CartViewProps) {
   const itemsCount = useCartStore((state) => state.getItemsCount());
   const totalCents = useCartStore((state) => state.getTotalCents());
   const [isHydrated, setIsHydrated] = useState(false);
+  const { showToast } = useToast();
 
   useEffect(() => {
     setIsHydrated(true);
   }, []);
+
+  function handleClearCart() {
+    clearCart();
+    showToast({
+      description: "Your saved cart is now empty.",
+      title: "Cart cleared",
+      tone: "info",
+    });
+  }
 
   if (!isHydrated) {
     return (
@@ -97,7 +108,7 @@ export function CartView({ checkoutState }: CartViewProps) {
           <button
             type="button"
             className="inline-flex h-10 items-center gap-2 rounded-lg border border-red-400/25 px-3 text-sm font-semibold text-red-200 transition hover:bg-red-500/10"
-            onClick={clearCart}
+            onClick={handleClearCart}
           >
             <Trash2 className="size-4" />
             Clear cart

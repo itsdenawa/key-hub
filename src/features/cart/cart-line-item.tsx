@@ -7,6 +7,7 @@ import Link from "next/link";
 import { type CartItem, useCartStore } from "@/features/cart/cart-store";
 import { formatMoney } from "@/shared/lib/format";
 import { Button } from "@/shared/ui/button";
+import { useToast } from "@/shared/ui/toast";
 
 type CartLineItemProps = {
   item: CartItem;
@@ -16,6 +17,16 @@ export function CartLineItem({ item }: CartLineItemProps) {
   const incrementProduct = useCartStore((state) => state.incrementProduct);
   const decrementProduct = useCartStore((state) => state.decrementProduct);
   const removeProduct = useCartStore((state) => state.removeProduct);
+  const { showToast } = useToast();
+
+  function handleRemove() {
+    removeProduct(item.productId);
+    showToast({
+      description: "You can add it again from the catalog anytime.",
+      title: `${item.title} removed`,
+      tone: "info",
+    });
+  }
 
   return (
     <article className="grid gap-4 rounded-lg border border-white/10 bg-[#071020]/85 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:grid-cols-[132px_minmax(0,1fr)] xl:grid-cols-[132px_minmax(0,1fr)_140px]">
@@ -73,7 +84,7 @@ export function CartLineItem({ item }: CartLineItemProps) {
             size="icon-sm"
             aria-label={`Remove ${item.title}`}
             className="text-slate-400 hover:bg-red-500/10 hover:text-red-200"
-            onClick={() => removeProduct(item.productId)}
+            onClick={handleRemove}
           >
             <Trash2 />
           </Button>

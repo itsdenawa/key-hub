@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import { useCartStore } from "@/features/cart/cart-store";
+import { useToast } from "@/shared/ui/toast";
 
 type CheckoutReturnHandlerProps = {
   mode: "cancelled" | "success";
@@ -10,12 +11,25 @@ type CheckoutReturnHandlerProps = {
 
 export function CheckoutReturnHandler({ mode }: CheckoutReturnHandlerProps) {
   const clearCart = useCartStore((state) => state.clearCart);
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (mode === "success") {
       clearCart();
+      showToast({
+        description: "Fulfillment is being finalized in your account.",
+        title: "Payment received",
+        tone: "success",
+      });
+      return;
     }
-  }, [clearCart, mode]);
+
+    showToast({
+      description: "Your cart is still saved when you are ready.",
+      title: "Checkout cancelled",
+      tone: "info",
+    });
+  }, [clearCart, mode, showToast]);
 
   if (mode === "cancelled") {
     return (

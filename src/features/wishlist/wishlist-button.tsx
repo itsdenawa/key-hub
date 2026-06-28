@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
+import { useToast } from "@/shared/ui/toast";
 
 type WishlistButtonProps = {
   productId: string;
@@ -14,7 +15,7 @@ type WishlistButtonProps = {
 export function WishlistButton({ productId, className }: WishlistButtonProps) {
   const [isSaved, setIsSaved] = useState(false);
   const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { showToast } = useToast();
 
   useEffect(() => {
     let isActive = true;
@@ -36,15 +37,32 @@ export function WishlistButton({ productId, className }: WishlistButtonProps) {
   async function toggleWishlist() {
     const previousSaved = isSaved;
 
-    setError(null);
     setIsSaved(!previousSaved);
     setIsPending(true);
 
-    const response = await fetch(`/api/wishlist/${productId}`, {
-      method: "POST",
-    });
+    let response: Response;
+
+    try {
+      response = await fetch(`/api/wishlist/${productId}`, {
+        method: "POST",
+      });
+    } catch {
+      setIsSaved(previousSaved);
+      setIsPending(false);
+      showToast({
+        description: "Please check your connection and try again.",
+        title: "Wishlist could not be updated",
+        tone: "error",
+      });
+      return;
+    }
 
     if (response.status === 401) {
+      showToast({
+        description: "Sign in to save products across devices.",
+        title: "Wishlist requires an account",
+        tone: "info",
+      });
       window.location.href = `/auth/sign-in?next=${encodeURIComponent(
         window.location.pathname,
       )}`;
@@ -56,10 +74,23 @@ export function WishlistButton({ productId, className }: WishlistButtonProps) {
     };
 
     if (response.ok) {
-      setIsSaved(Boolean(payload.saved));
+      const nextSaved = Boolean(payload.saved);
+
+      setIsSaved(nextSaved);
+      showToast({
+        description: nextSaved
+          ? "Saved products stay in your account."
+          : "The product was removed from your saved list.",
+        title: nextSaved ? "Saved to wishlist" : "Removed from wishlist",
+        tone: "success",
+      });
     } else {
       setIsSaved(previousSaved);
-      setError("Wishlist could not be updated.");
+      showToast({
+        description: "Please try again in a moment.",
+        title: "Wishlist could not be updated",
+        tone: "error",
+      });
     }
 
     setIsPending(false);
@@ -80,11 +111,6 @@ export function WishlistButton({ productId, className }: WishlistButtonProps) {
       >
         <Heart className={cn(isSaved && "fill-current")} />
       </Button>
-      {error ? (
-        <span className="absolute right-0 top-full z-10 mt-2 w-48 rounded-lg border border-red-400/25 bg-[#1a0d16] p-2 text-xs text-red-100 shadow-xl">
-          {error}
-        </span>
-      ) : null}
     </span>
   );
 }
