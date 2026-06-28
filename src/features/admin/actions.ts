@@ -12,7 +12,11 @@ import {
   updateOrderStatusSchema,
 } from "@/features/admin/schemas";
 import { createSupabaseServerClient } from "@/shared/api/supabase/server";
-import { hasSupabaseBrowserEnv } from "@/shared/config/env";
+import {
+  clientEnv,
+  hasSupabaseBrowserEnv,
+  serverEnv,
+} from "@/shared/config/env";
 
 export async function upsertProductAction(
   _state: AdminActionState,
@@ -24,6 +28,8 @@ export async function upsertProductAction(
     return adminCheck.state;
   }
 
+  const imageFile = getOptionalFile(formData.get("imageFile"));
+  const assetFile = getOptionalFile(formData.get("assetFile"));
   const parsed = adminProductSchema.safeParse({
     assetFilename: emptyToUndefined(formData.get("assetFilename")),
     assetSizeMb: formData.get("assetSizeMb"),
@@ -88,8 +94,39 @@ export async function upsertProductAction(
     };
   }
 
-  await upsertProductImage(supabase, product.id, parsed.data.imagePath);
-  await upsertProductAsset(supabase, product.id, parsed.data);
+  const uploadedImagePath = imageFile
+    ? await uploadProductImageFile(supabase, parsed.data.slug, imageFile)
+    : { ok: true as const, path: undefined };
+
+  if (!uploadedImagePath.ok) {
+    return uploadedImagePath.state;
+  }
+
+  const uploadedAssetPath = assetFile
+    ? await uploadProductAssetFile(
+        supabase,
+        parsed.data.slug,
+        parsed.data.assetVersion,
+        assetFile,
+      )
+    : { ok: true as const, path: undefined };
+
+  if (!uploadedAssetPath.ok) {
+    return uploadedAssetPath.state;
+  }
+
+  const productImagePath = uploadedImagePath.path ?? parsed.data.imagePath;
+  const assetFields = {
+    ...parsed.data,
+    assetFilename: assetFile?.name ?? parsed.data.assetFilename,
+    assetSizeMb: assetFile
+      ? bytesToMb(assetFile.size)
+      : parsed.data.assetSizeMb,
+    assetStoragePath: uploadedAssetPath.path ?? parsed.data.assetStoragePath,
+  };
+
+  await upsertProductImage(supabase, product.id, productImagePath);
+  await upsertProductAsset(supabase, product.id, assetFields);
 
   revalidateAdminAndStorefront();
 
@@ -306,6 +343,65 @@ async function upsertProductAsset(
   });
 }
 
+async function uploadProductImageFile(
+  supabase: SupabaseServerClient,
+  slug: string,
+  file: File,
+) {
+  const extension = getFileExtension(file.name);
+  const path = `${slug}/cover-${Date.now()}${extension}`;
+  const { error } = await supabase.storage
+    .from(clientEnv.NEXT_PUBLIC_PRODUCT_IMAGE_BUCKET)
+    .upload(path, file, {
+      cacheControl: "31536000",
+      contentType: file.type || undefined,
+      upsert: true,
+    });
+
+  if (error) {
+    return {
+      ok: false as const,
+      state: {
+        status: "error" as const,
+        message: `Could not upload product image: ${error.message}`,
+      },
+    };
+  }
+
+  return { ok: true as const, path };
+}
+
+async function uploadProductAssetFile(
+  supabase: SupabaseServerClient,
+  slug: string,
+  version: string,
+  file: File,
+) {
+  const extension = getFileExtension(file.name);
+  const safeVersion = sanitizePathSegment(version || "latest");
+  const safeFilename = sanitizePathSegment(stripFileExtension(file.name));
+  const path = `${slug}/${safeVersion}/${Date.now()}-${safeFilename}${extension}`;
+  const { error } = await supabase.storage
+    .from(serverEnv.PRIVATE_PRODUCT_ASSET_BUCKET)
+    .upload(path, file, {
+      cacheControl: "3600",
+      contentType: file.type || undefined,
+      upsert: true,
+    });
+
+  if (error) {
+    return {
+      ok: false as const,
+      state: {
+        status: "error" as const,
+        message: `Could not upload private asset: ${error.message}`,
+      },
+    };
+  }
+
+  return { ok: true as const, path };
+}
+
 async function requireAdmin() {
   if (!hasSupabaseBrowserEnv()) {
     return {
@@ -353,4 +449,36 @@ function emptyToUndefined(value: FormDataEntryValue | null) {
 
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : undefined;
+}
+
+function getOptionalFile(value: FormDataEntryValue | null) {
+  if (!(value instanceof File) || value.size <= 0) {
+    return undefined;
+  }
+
+  return value;
+}
+
+function bytesToMb(bytes: number) {
+  return Math.round((bytes / 1024 / 1024) * 100) / 100;
+}
+
+function getFileExtension(filename: string) {
+  const extension = filename.match(/\.[a-z0-9]+$/i)?.[0];
+
+  return extension ? extension.toLowerCase() : "";
+}
+
+function stripFileExtension(filename: string) {
+  return filename.replace(/\.[a-z0-9]+$/i, "");
+}
+
+function sanitizePathSegment(value: string) {
+  return (
+    value
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "file"
+  );
 }

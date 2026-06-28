@@ -70,7 +70,11 @@ export function ProductForm({
         </div>
       </div>
 
-      <form action={formAction} className="grid gap-5">
+      <form
+        action={formAction}
+        className="grid gap-5"
+        encType="multipart/form-data"
+      >
         <input type="hidden" name="id" value={product?.id ?? ""} />
 
         <FormBlock icon={<Sparkles className="size-4" />} title="Basics">
@@ -179,6 +183,12 @@ export function ProductForm({
             defaultValue={product?.imagePath ?? ""}
             placeholder="launch-kit-pro.png"
           />
+          <FileField
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            description="Uploads to the public product image bucket and replaces the path above on save."
+            label="Upload product image"
+            name="imageFile"
+          />
         </FormBlock>
 
         <FormBlock icon={<FileArchive className="size-4" />} title="Asset">
@@ -196,6 +206,12 @@ export function ProductForm({
               placeholder="launch-kit-pro/latest.zip"
             />
           </div>
+          <FileField
+            accept=".zip,.pdf,.json,.md,.txt,.csv,application/zip,application/pdf,application/json,text/markdown,text/plain,text/csv"
+            description="Uploads to the private product asset bucket and stores entitlement-protected metadata."
+            label="Upload private asset"
+            name="assetFile"
+          />
           <div className="grid gap-4 md:grid-cols-2">
             <Field
               label="Asset size MB"
@@ -316,6 +332,31 @@ function SelectField({
       >
         {children}
       </Select>
+    </div>
+  );
+}
+
+type FileFieldProps = {
+  accept: string;
+  description: string;
+  label: string;
+  name: string;
+};
+
+function FileField({ accept, description, label, name }: FileFieldProps) {
+  return (
+    <div className="grid gap-2">
+      <label className="text-sm font-semibold text-slate-300" htmlFor={name}>
+        {label}
+      </label>
+      <input
+        accept={accept}
+        className="block w-full rounded-lg border border-dashed border-white/15 bg-[#0a1223] px-3 py-3 text-sm text-slate-300 file:mr-4 file:rounded-lg file:border-0 file:bg-violet-500/15 file:px-3 file:py-2 file:text-sm file:font-bold file:text-violet-200 hover:border-violet-400/30"
+        id={name}
+        name={name}
+        type="file"
+      />
+      <p className="text-xs leading-5 text-slate-500">{description}</p>
     </div>
   );
 }
